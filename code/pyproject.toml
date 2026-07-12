@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dpd-ml-project"
+version = "0.1.0"
+description = "Starter Python project"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Ashaulski" }]
+dependencies = ["numpy>=1.26"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+dpd-ml-project = "dpd_ml_project.main:run"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
