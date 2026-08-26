@@ -1,1 +1,0 @@
-"""Modeled channel/bench abstractions."""

@@ -1,8 +1,29 @@
+"""GMP (Generalized Memory Polynomial) predistortion.
+====================================================
+
+Inputs:
+    tx_iq: complex baseband input samples (1-D array).
+    coeffs: complex GMP coefficient vector (length Ncoeff).
+    bypass: if True, return the input unchanged with a zero basis matrix.
+
+Outputs:
+    y_out: complex predistorted output samples (1-D array).
+    y_ordered: monomial basis matrix, shape (num_samples, Ncoeff).
+
+Functionality:
+    Create the monomial terms of the polynomial according to polynomial order
+    and memory depth, then calculate the polynomial by applying the coefficients
+    on the monomials.
+====================================================
+"""
+
 from dpd_ml_project import config
 import numpy as np
 
 
-def apply_predistortion(
+
+
+def apply_predistortion_gmp(
     tx_iq: np.ndarray,
     coeffs: np.ndarray,
     bypass: bool = False,

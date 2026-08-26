@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from dpd_ml_project.cal.calibrator import Calibrator
-from dpd_ml_project.orchestrator.dpd_analysis import run_analysis, run_analysis_all
+from dpd_ml_project.orchestrator.dpd_analysis import run_analysis_all
 from dpd_ml_project.orchestrator.dpd_pipeline import IterationConfig, IterationResult,  SetUpConfig, run_iteration
 
 test_name = "test_cal_ewrls"
@@ -11,7 +11,7 @@ setup_config = SetUpConfig(
     iterations_per_sym=500,
     initial_coeffs=None,
     snr_db=70,
-    signal_rms_dbp=-10,
+    signal_rms_dbp=-8,
 )
 
 itrs_config = [IterationConfig() for _ in range(setup_config.num_ofdm_sym)]
@@ -48,7 +48,3 @@ output_dir = Path("tests") / "results" / test_name
 output_dir.mkdir(parents=True, exist_ok=True)
 
 run_analysis_all(itrs_results, itrs_config, output_dir=output_dir)
-
-# for i in range(setup_config.num_ofdm_sym):
-#     result = run_analysis(itrs_results[i], itrs_config[i], output_dir=output_dir)
-#     print(f"Iteration {i+1}/{setup_config.num_ofdm_sym} - Status: {itrs_results[i].status}, EVM   : {itrs_results[i].evm_db:.2f} dB, Mask Pass: {itrs_results[i].mask_pass}")    

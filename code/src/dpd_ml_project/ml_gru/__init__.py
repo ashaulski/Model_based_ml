@@ -1,1 +1,0 @@
-"""GRU ML model."""

@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from dpd_ml_project.cal.calibrator import Calibrator
 from dpd_ml_project.channel.pa_model import apply_pa_model
 from dpd_ml_project.channel.awgn import apply_awgn
-from dpd_ml_project.dpd.dpd import apply_predistortion
+from dpd_ml_project.dpd.dpd import apply_predistortion_gmp
 from dpd_ml_project.metrics.evm import compute_evm
 from dpd_ml_project.metrics.mask import check_relative_mask
 from dpd_ml_project.siggen.SigGen import gen_lsig
@@ -111,7 +111,7 @@ def run_iteration(iter_config: IterationConfig | None = None) -> IterationResult
 
     # --- Apply predistortion with current coefficients ---
     coeffs = np.asarray(cfg.calibrator.coeffs, dtype=complex).reshape(-1)
-    tx_prd_out, _ = apply_predistortion(tx_iq_with_awgn, coeffs, bypass=bp.dprd)
+    tx_prd_out, _ = apply_predistortion_gmp(tx_iq_with_awgn, coeffs, bypass=bp.dprd)
 
     # --- PA / channel model ---
     rf_out = apply_pa_model(tx_prd_out, bypass=bp.pa_model)
@@ -132,7 +132,7 @@ def run_iteration(iter_config: IterationConfig | None = None) -> IterationResult
     # =======================================================================================
 
     # --- Apply post-distortion with current coefficients --- ---
-    tx_pod_out, y_ordered = apply_predistortion(gain_correction*rf_out, coeffs, bypass=bp.dpod)
+    tx_pod_out, y_ordered = apply_predistortion_gmp(gain_correction*rf_out, coeffs, bypass=bp.dpod)
 
 
     # a try to to check inband EVM of previous iteration and decide to update coefficients or not
@@ -151,7 +151,6 @@ def run_iteration(iter_config: IterationConfig | None = None) -> IterationResult
     # =======================================================================================
 
     # --- Update calibrator (LS or RLS) --- 
-    # calibration works @640MHz rate, so use upsampled signal and PA input for estimation
     cfg.calibrator = cfg.calibrator.update(tx_prd_out, tx_pod_out, rf_out, y_ordered, bypass=bp.estimator)
     coeffs = np.asarray(cfg.calibrator.coeffs, dtype=complex).reshape(-1)
 
@@ -165,7 +164,7 @@ def run_iteration(iter_config: IterationConfig | None = None) -> IterationResult
 
 
     # # debug
-    # x_prd = apply_predistortion(tx_iq, cfg.calibrator.coeffs, bypass=False)
+    # x_prd = apply_predistortion_gmp(tx_iq, cfg.calibrator.coeffs, bypass=False)
     # Y_prd = apply_pa_model(x_prd, bypass=False)
 
 
@@ -188,18 +187,6 @@ def run_iteration(iter_config: IterationConfig | None = None) -> IterationResult
     # plt.legend()
     # plt.tight_layout()
     # # plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
 
     return IterationResult(
         status=status,
