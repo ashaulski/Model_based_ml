@@ -1,5 +1,9 @@
-"""DPD ML project skeleton package."""
+"""DPD ML project package.
 
-from dpd_ml_project.orchestrator.dpd_pipeline import IterationConfig, ModuleBypass, run_iteration
+Architectures plug into one generic pipeline via ``core.registry.build_dpd``:
+    * predistorters: GMP (linear), GRU (neural)
+    * adapters:      LS / RLS / Kalman (linear), SGD (neural)
 
-__all__ = ["run_iteration", "IterationConfig", "ModuleBypass"]
+See ``dpd_ml_project.experiments`` for runnable drivers.
+"""
+from __future__ import annotations

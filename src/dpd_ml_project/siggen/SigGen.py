@@ -1,13 +1,13 @@
 import numpy as np
-from dpd_ml_project import config
+from dpd_ml_project.core.common_config import SimConfig
 
 
 
-_FFT_SIZE = config.Config.FFT_SIZE
-_CP_LEN = config.Config.CP_LEN
-_PILOT_CARRIERS = config.Config.PILOT_CARRIERS
-_PILOT_VALUES = config.Config.PILOT_VALUES
-_DATA_CARRIERS = config.Config.DATA_CARRIERS
+_FFT_SIZE = SimConfig.FFT_SIZE
+_CP_LEN = SimConfig.CP_LEN
+_PILOT_CARRIERS = SimConfig.PILOT_CARRIERS
+_PILOT_VALUES = SimConfig.PILOT_VALUES
+_DATA_CARRIERS = SimConfig.DATA_CARRIERS
 
 
 def _bpsk_map(bits: np.ndarray) -> np.ndarray:
@@ -21,7 +21,7 @@ def _carrier_to_index(k: int) -> int:
 
 def gen_lsig(
     bypass: bool = False,
-    signal_rms_dbp: float = config.Config.signal_rms_dbp,
+    signal_rms_dbp: float = -10.0,
     repeat_bits_every_call: bool = False,
     bits_seed: int = 0,
 ) -> np.ndarray:

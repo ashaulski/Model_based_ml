@@ -1,0 +1,1 @@
+"""Coefficient adapters (estimators/trainers)."""
