@@ -2,13 +2,44 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Run Hello Project",
+			"label": "Run GMP + RLS",
 			"type": "shell",
-			"command": "C:/Users/ashaulski/AppData/Local/Microsoft/WindowsApps/python3.13.exe",
-			"args": [
-				"src/dpd_ml_project/main.py"
-			],
-			"group": "build"
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": ["-m", "dpd_ml_project.experiments.run_gmp_rls"],
+			"group": { "kind": "build", "isDefault": true },
+			"problemMatcher": []
+		},
+		{
+			"label": "Run GMP + LS",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": ["-m", "dpd_ml_project.experiments.run_gmp_ls"],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Run GMP + Kalman",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": ["-m", "dpd_ml_project.experiments.run_gmp_kal"],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Run GRU",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": ["-m", "dpd_ml_project.experiments.run_gru"],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Run VDTDNN",
+			"type": "shell",
+			"command": "${workspaceFolder}/.venv/Scripts/python.exe",
+			"args": ["-m", "dpd_ml_project.experiments.run_vdtdnn"],
+			"group": "build",
+			"problemMatcher": []
 		}
 	]
 }

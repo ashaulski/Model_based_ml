@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Attach (debugpy 5678)",
+      "type": "debugpy",
+      "request": "attach",
+      "connect": { "host": "localhost", "port": 5678 },
+      "justMyCode": false
+    },
+    {
+      "name": "Python: Current Module",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "dpd_ml_project.experiments.run_vdtdnn",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
+}

@@ -49,3 +49,50 @@ class NnConfig:
     enhance_features: bool = False
     lr: float = 2e-4
     batch_size: int = 64
+
+
+@dataclass
+class VdtdnnConfig:
+    """Vector-decomposed time-delay NN (VDTDNN / AVDTDNN) hyperparameters.
+
+    Nonlinearity acts on the input magnitude only; phase is restored by linear
+    cos/sin weighting. ``augmented=True`` selects AVDTDNN (higher-order
+    magnitude terms in the input vector).
+    """
+    memory_depth: int = 4
+    neurons_per_group: int = 6
+    activation: str = "abs"
+    augmented: bool = False
+    powers: tuple[int, ...] = (1, 2, 3)
+    linear_term: bool = True
+
+    # training knobs (paper: two-stage Adam step size)
+    lr: float = 1e-2
+    lr_final: float = 1e-3
+    lr_switch_frac: float = 0.87
+    batch_size: int = 256
+    num_epochs: int = 150
+    patience: int = 15
+
+    @property
+    def num_groups(self) -> int:
+        """One phase-recovery group per memory tap."""
+        return self.memory_depth + 1
+
+    @property
+    def num_neurons(self) -> int:
+        return self.neurons_per_group * self.num_groups
+
+    @property
+    def in_powers(self) -> tuple[int, ...]:
+        return tuple(self.powers) if self.augmented else (1,)
+
+    @property
+    def in_dim(self) -> int:
+        return self.num_groups * len(self.in_powers)
+
+    @property
+    def num_coefficients(self) -> int:
+        """Trainable coefficient count (matches eqs. 15/18 of the paper)."""
+        num_phase_units = self.num_neurons + (self.num_groups if self.linear_term else 0)
+        return (self.in_dim + 1) * self.num_neurons + 4 * num_phase_units

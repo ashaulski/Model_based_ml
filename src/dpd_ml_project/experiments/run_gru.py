@@ -31,9 +31,12 @@ def run(num_train: int = 40, num_eval: int = 20, epochs: int = 15,
     sim = SimConfig(signal_rms_dbp=-7.0, snr_db=70.0)
     model, adapter = build_dpd({"arch": "gru", "adapter": "gru_sgd", "lr": 2e-4})
 
-    # --- offline training on clean input/output pairs ---
+    # run "num_train" OFDM symbols through data path: sig_gen -> awgn -> predistort -> PA -> capture
+    # get a list of "num_train" with dimension (num_train x num_samples_per_symbol)
+    # for each point on data path
     train_caps = [_make_capture(model, adapter, sim, seed=1000 + i).capture
                   for i in range(num_train)]
+    # 
     for epoch in range(epochs):
         for cap in train_caps:
             adapter.update(model, cap)
