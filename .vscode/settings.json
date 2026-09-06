@@ -7,6 +7,8 @@
     "python.analysis.extraPaths": [
         "src"
     ],
+    "markdown.preview.fontSize": 18,
+    "markdown.preview.lineHeight": 1.7,
     "chat.tools.terminal.autoApprove": {
         "&": true
     }
